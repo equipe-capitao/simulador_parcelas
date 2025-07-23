@@ -1,0 +1,200 @@
+@page {
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f2f5;
+    /* Cor de fundo suave para a tela */
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+/* --- Container da Página na Tela --- */
+.pdf-wrapper {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 30px auto;
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Estilos para Impressão (PDF) --- */
+@media print {
+    body {
+        background-color: white;
+    }
+
+    .pdf-wrapper {
+        margin: 0;
+        box-shadow: none;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+
+/* --- 1. Cabeçalho --- */
+.header {
+    background-color: #0A183D;
+    color: white;
+    padding: 25px 40px 100px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    /* Essencial para a onda */
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+.header .logo {
+    max-height: 90px;
+    /* Logo maior */
+    z-index: 10;
+    /* Garante que a logo fique sobre a onda */
+}
+
+.header .header-text {
+    text-align: right;
+    z-index: 10;
+    /* Garante que o texto fique sobre a onda */
+}
+
+.header .simulacao-titulo {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 400;
+    /* Poppins Regular */
+}
+
+.header .cliente-nome {
+    margin: 0;
+    font-size: 29px;
+    font-weight: 700;
+    /* Poppins Bold */
+}
+
+/* --- Estilos da Onda (SVG) --- */
+.onda {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.onda svg {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100px;
+}
+
+.onda .shape-fill {
+    fill: #FFFFFF;
+    /* Cor do fundo da página */
+}
+
+
+/* --- 2. Corpo Principal --- */
+.main-content {
+    background-color: #ffffff;
+    /* Fundo branco para a caixa */
+    border: 1px solid #e9ecef;
+    /* Borda cinza clara e sutil */
+    border-radius: 16px;
+    /* Cantos arredondados */
+    padding: 30px;
+    /* Espaçamento interno */
+    margin: -40px 30px 0 30px;
+    /* Margem para "subir" e ficar sobre a onda */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+    /* Sombra suave */
+    position: relative;
+    /* Garante que a caixa fique sobre a onda */
+    z-index: 100;
+    /* Define a camada da caixa */
+    flex-grow: 1;
+}
+
+.main-content .resultado-titulo {
+    font-weight: 700;
+    font-size: 16px;
+    /* Aumentado de 14px */
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.main-content .secao-titulo {
+    font-size: 14px;
+    /* Aumentado de 12px */
+    font-weight: 700;
+    color: #0A183D;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 8px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+
+.info-bloco .info-linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 13px;
+    /* Aumentado de 12px */
+    color: #333;
+    padding: 5px 0;
+}
+
+.info-bloco .info-linha span:first-child {
+    font-weight: 400;
+    /* CORREÇÃO FINAL: Poppins Regular para o rótulo */
+    flex-grow: 1;
+    padding-right: 15px;
+    /* Espaço entre rótulo e valor */
+}
+
+.info-bloco .info-linha span:last-child {
+    font-weight: 700;
+    /* Poppins Bold para o valor */
+    text-align: right;
+    min-width: 150px;
+}
+
+.info-bloco .info-linha .valor-bolso {
+    color: rgb(136, 201, 38);
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+
+/* --- 3. Rodapé --- */
+.footer {
+    padding: 20px 40px;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 25px;
+}
+
+.footer .aviso-legal {
+    font-size: 10px;
+    /* Aumentado de 9px */
+    color: #666;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.footer .footer-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    /* Aumentado de 9px */
+    color: #333;
+}

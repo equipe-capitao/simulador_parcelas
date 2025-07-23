@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container" id="paginaSimuladorConsorcio">
+    
+        <h1>Simulador de Consórcio</h1>
+    
+        <div class="input-section" id="dadosCliente">
+            <h2>Nome do Cliente:</h2>
+            <div class="form-group">
+                <label for="nomeCliente">Simulado em nome:</label>
+                <input type="text" id="nomeCliente" placeholder="Digite o nome do cliente aqui">
+            </div>
+        </div>
+    
+        <div class="input-section" id="selecaoAdministradora">
+            <h2>Selecione a Administradora</h2>
+            <div class="form-group" style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+                <div>
+                    <input type="radio" name="administradora" id="adminPorto" value="porto">
+                    <label for="adminPorto" class="radio-label">Porto Seguro Consórcio</label>
+                </div>
+                <div>
+                    <input type="radio" name="administradora" id="adminItau" value="itau">
+                    <label for="adminItau" class="radio-label">Itaú Consórcio</label>
+                </div>
+                <div>
+                    <input type="radio" name="administradora" id="adminYamaha" value="yamaha">
+                    <label for="adminYamaha" class="radio-label">Yamaha Consórcio</label>
+                </div>
+            </div>
+        </div>
+    
+        <div class="input-section" id="selecaoTipoBem" style="display:none;">
+            <h2>Selecione o Tipo de Bem</h2>
+            <div class="form-group" style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+                <div>
+                    <input type="radio" name="tipoBem" id="tipoBemImovel" value="imovel">
+                    <label for="tipoBemImovel" class="radio-label">Imóvel</label>
+                </div>
+                <div>
+                    <input type="radio" name="tipoBem" id="tipoBemAutomovel" value="automovel">
+                    <label for="tipoBemAutomovel" class="radio-label">Automóvel</label>
+                </div>
+            </div>
+        </div>
+    
+    
+        <div class="input-section administradora-bem-fields" id="fieldsPortoImovel" style="display:none;">
+            <h2>Dados da Simulação - Porto Seguro (Imóvel)</h2>
+            <div class="form-group">
+                <label for="portoImovelValorCredito">Valor do Crédito/Bem (R$):</label>
+                <input type="text" id="portoImovelValorCredito" placeholder="Ex: 200.000,00" data-type="currency">
+            </div>
+            <div class="form-group">
+                <label for="portoImovelNumeroParcelas">Número de Parcelas:</label>
+                <input type="number" id="portoImovelNumeroParcelas" placeholder="Ex: 200" step="1" min="1">
+            </div>
+            <div class="form-group">
+                <label for="portoImovelTaxaAdm">Taxa de Administração Total:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="portoImovelTaxaAdm" placeholder="Ex: 18" data-type="percent" data-precision="2"
+                        min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="portoImovelAdesao">Taxa de Adesão:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="portoImovelAdesao" placeholder="Ex: 2" data-type="percent" data-precision="2"
+                        min="0">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Forma de Pagamento da Taxa de Adesão:</label>
+                <div>
+                    <input type="radio" name="portoImovelPagamentoAdesao" id="portoImovelAdesaoVista" value="1" checked>
+                    <label for="portoImovelAdesaoVista" class="radio-label">À Vista (1x)</label>
+                </div>
+                <div>
+                    <input type="radio" name="portoImovelPagamentoAdesao" id="portoImovelAdesao3x" value="3">
+                    <label for="portoImovelAdesao3x" class="radio-label">3 vezes</label>
+                </div>
+                <div>
+                    <input type="radio" name="portoImovelPagamentoAdesao" id="portoImovelAdesao5x" value="5">
+                    <label for="portoImovelAdesao5x" class="radio-label">5 vezes</label>
+                </div>
+                <div>
+                    <input type="radio" name="portoImovelPagamentoAdesao" id="portoImovelAdesao6x" value="6">
+                    <label for="portoImovelAdesao6x" class="radio-label">6 vezes</label>
+                </div>
+                <div>
+                    <input type="radio" name="portoImovelPagamentoAdesao" id="portoImovelAdesao12x" value="12">
+                    <label for="portoImovelAdesao12x" class="radio-label">12 vezes</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="portoImovelFundoReserva">Fundo de Reserva:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="portoImovelFundoReserva" placeholder="Ex: 2" data-type="percent"
+                        data-precision="2" min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="portoImovelSeguroVida">Seguro de Vida Mensal (sobre Saldo Devedor Base):</label>
+                <div class="input-wrapper">
+                    <input type="text" id="portoImovelSeguroVida" placeholder="Ex: 0.038" data-type="percent"
+                        data-precision="4" min="0">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="portoImovelRedutorParcela">Percentual Redutor da Parcela (opcional):</label>
+                <div class="input-wrapper">
+                    <input type="text" id="portoImovelRedutorParcela" placeholder="Ex: 25" data-type="percent"
+                        data-precision="2" min="0" max="50">
+                    <span class="input-suffix">%</span>
+                </div>
+                <small>Padrão Porto: 25%. Pode variar (até 50%). Deixe 0 se não aplicável.</small>
+            </div>
+        </div>
+    
+        <div class="input-section administradora-bem-fields" id="fieldsPortoAutomovel" style="display:none;">
+            <h2> Dados da Simulação - Porto Seguro (Automóvel)</h2>
+            <div class="form-group">
+                <label for="portoAutomovelValorCredito">Valor do Crédito/Bem (R$):</label>
+                <input type="text" id="portoAutomovelValorCredito" placeholder="Ex: 70.000,00" data-type="currency">
+            </div>
+            <div class="form-group">
+                <label for="portoAutomovelNumeroParcelas">Número de Parcelas:</label>
+                <input type="number" id="portoAutomovelNumeroParcelas" placeholder="Ex: 80" step="1" min="1">
+            </div>
+            <div class="form-group">
+                <label for="portoAutomovelTaxaAdm">Taxa de Administração Total:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="portoAutomovelTaxaAdm" placeholder="Ex: 15" data-type="percent"
+                        data-precision="2" min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="portoAutomovelFundoReserva">Fundo de Reserva:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="portoAutomovelFundoReserva" placeholder="Ex: 1.5" data-type="percent"
+                        data-precision="2" min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="portoAutomovelSeguroVida">Seguro de Vida Mensal (sobre Saldo Devedor Base):</label>
+                <div class="input-wrapper">
+                    <input type="text" id="portoAutomovelSeguroVida" placeholder="Ex: 0.045" data-type="percent"
+                        data-precision="3" min="0">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="portoAutomovelRedutorParcela">Percentual Redutor da Parcela (opcional):</label>
+                <div class="input-wrapper">
+                    <input type="text" id="portoAutomovelRedutorParcela" placeholder="Ex: 0" data-type="percent"
+                        data-precision="2" min="0" max="50">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div id="portoAutomovelAlertaLance" class="form-group"
+                style="margin-top: 15px; padding: 10px; background-color: #e9ecef; border-radius: 4px; display: none;">
+                <p style="font-size: 0.9em; color: #495057;">As opções de lance abaixo serão ajustadas conforme as regras da
+                    Porto Seguro para o valor de crédito informado.</p>
+            </div>
+        </div>
+    
+        <div class="input-section administradora-bem-fields" id="fieldsItauImovel" style="display:none;">
+            <h2>Dados da Simulação - Itaú (Imóvel)</h2>
+            <div class="form-group">
+                <label for="itauImovelValorCredito">Valor do Crédito/Bem (R$):</label>
+                <input type="text" id="itauImovelValorCredito" placeholder="Ex: 250.000,00" data-type="currency">
+            </div>
+            <div class="form-group">
+                <label for="itauImovelNumeroParcelas">Número de Parcelas:</label>
+                <input type="number" id="itauImovelNumeroParcelas" placeholder="Ex: 180" step="1" min="1">
+            </div>
+            <div class="form-group">
+                <label for="itauImovelTaxaAdm">Taxa de Administração Total:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="itauImovelTaxaAdm" placeholder="Ex: 20" data-type="percent" data-precision="2"
+                        min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="itauImovelFundoReserva">Fundo de Reserva:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="itauImovelFundoReserva" placeholder="Ex: 3" data-type="percent"
+                        data-precision="2" min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="itauImovelSeguroVida">Seguro de Vida Mensal (sobre Valor do Crédito):</label>
+                <div class="input-wrapper">
+                    <input type="text" id="itauImovelSeguroVida" placeholder="Ex: 0.03" data-type="percent"
+                        data-precision="3" min="0">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="itauImovelRedutorParcela">Percentual Redutor da Parcela (opcional):</label>
+                <div class="input-wrapper">
+                    <input type="text" id="itauImovelRedutorParcela" placeholder="Ex: 0" data-type="percent"
+                        data-precision="2" min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+        </div>
+    
+        <div class="input-section administradora-bem-fields" id="fieldsItauAutomovel" style="display:none;">
+            <h2>Dados da Simulação - Itaú (Automóvel)</h2>
+            <div class="form-group">
+                <label for="itauAutomovelValorCredito">Valor do Crédito/Bem (R$):</label>
+                <input type="text" id="itauAutomovelValorCredito" placeholder="Ex: 50.000,00" data-type="currency">
+            </div>
+            <div class="form-group">
+                <label for="itauAutomovelNumeroParcelas">Número de Parcelas:</label>
+                <input type="number" id="itauAutomovelNumeroParcelas" placeholder="Ex: 72" step="1" min="1">
+            </div>
+            <div class="form-group">
+                <label for="itauAutomovelTaxaAdm">Taxa de Administração Total:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="itauAutomovelTaxaAdm" placeholder="Ex: 14" data-type="percent" data-precision="2"
+                        min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="itauAutomovelFundoReserva">Fundo de Reserva:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="itauAutomovelFundoReserva" placeholder="Ex: 2" data-type="percent"
+                        data-precision="2" min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="itauAutomovelSeguroVida">Seguro de Vida Mensal (sobre Valor do Crédito):</label>
+                <div class="input-wrapper">
+                    <input type="text" id="itauAutomovelSeguroVida" placeholder="Ex: 0.09" data-type="percent"
+                        data-precision="3" min="0">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="itauAutomovelRedutorParcela">Percentual Redutor da Parcela (opcional):</label>
+                <div class="input-wrapper">
+                    <input type="text" id="itauAutomovelRedutorParcela" placeholder="Ex: 0" data-type="percent"
+                        data-precision="2" min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+        </div>
+    
+        <div class="input-section administradora-bem-fields" id="fieldsYamahaImovel" style="display:none;">
+            <h2> Dados da Simulação - Yamaha (Imóvel)</h2>
+            <div class="form-group">
+                <label for="yamahaImovelValorCredito">Valor do Crédito/Bem (R$):</label>
+                <input type="text" id="yamahaImovelValorCredito" placeholder="Ex: 150.000,00" data-type="currency">
+            </div>
+            <div class="form-group">
+                <label for="yamahaImovelNumeroParcelas">Número de Parcelas:</label>
+                <input type="number" id="yamahaImovelNumeroParcelas" placeholder="Ex: 120" step="1" min="1">
+            </div>
+            <div class="form-group">
+                <label for="yamahaImovelTaxaAdm">Taxa de Administração Total:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="yamahaImovelTaxaAdm" placeholder="Ex: 22" data-type="percent" data-precision="2"
+                        min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="yamahaImovelFundoReserva">Fundo de Reserva:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="yamahaImovelFundoReserva" placeholder="Ex: 3" data-type="percent"
+                        data-precision="2" min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="yamahaImovelSeguroVida">Seguro de Vida Mensal (sobre Valor do Crédito):</label>
+                <div class="input-wrapper">
+                    <input type="text" id="yamahaImovelSeguroVida" placeholder="Ex: 0.05" data-type="percent"
+                        data-precision="4" min="0">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="yamahaImovelRedutorParcela">Percentual Redutor da Parcela (opcional):</label>
+                <div class="input-wrapper">
+                    <input type="text" id="yamahaImovelRedutorParcela" placeholder="Ex: 0" data-type="percent"
+                        data-precision="2" min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+        </div>
+    
+        <div class="input-section administradora-bem-fields" id="fieldsYamahaAutomovel" style="display:none;">
+            <h2>Dados da Simulação - Yamaha (Automóvel/Moto)</h2>
+            <div class="form-group">
+                <label for="yamahaAutomovelValorCredito">Valor do Crédito/Bem (R$):</label>
+                <input type="text" id="yamahaAutomovelValorCredito" placeholder="Ex: 20.000,00" data-type="currency">
+            </div>
+            <div class="form-group">
+                <label for="yamahaAutomovelNumeroParcelas">Número de Parcelas:</label>
+                <input type="number" id="yamahaAutomovelNumeroParcelas" placeholder="Ex: 60" step="1" min="1">
+            </div>
+            <div class="form-group">
+                <label for="yamahaAutomovelTaxaAdm">Taxa de Administração Total:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="yamahaAutomovelTaxaAdm" placeholder="Ex: 19" data-type="percent"
+                        data-precision="2" min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="yamahaAutomovelFundoReserva">Fundo de Reserva:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="yamahaAutomovelFundoReserva" placeholder="Ex: 2" data-type="percent"
+                        data-precision="2" min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="yamahaAutomovelSeguroVida">Seguro de Vida Mensal (sobre Valor do Crédito):</label>
+                <div class="input-wrapper">
+                    <input type="text" id="yamahaAutomovelSeguroVida" placeholder="Ex: 0.0431" data-type="percent"
+                        data-precision="5" min="0">
+                    <span class="input-suffix">%</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="yamahaAutomovelRedutorParcela">Percentual Redutor da Parcela (opcional):</label>
+                <div class="input-wrapper">
+                    <input type="text" id="yamahaAutomovelRedutorParcela" placeholder="Ex: 0" data-type="percent"
+                        data-precision="2" min="0" max="100">
+                    <span class="input-suffix">%</span>
+                </div>
+                <small>Verificar opções de redutor com a Yamaha.</small>
+            </div>
+        </div>
+        <div class="input-section" id="dadosClienteTipo" style="display:none;">
+            <h2>Seguro de Vida</h2>
+            <div class="form-group">
+                <label></label>
+                <div>
+                    <input type="radio" name="tipoCliente" id="tipoClienteCPF" value="cpf" checked>
+                    <label for="tipoClienteCPF" class="radio-label">Com Seguro de Vida</label>
+                    <br>
+                    <input type="radio" name="tipoCliente" id="tipoClienteCNPJ" value="cnpj">
+                    <label for="tipoClienteCNPJ" class="radio-label">Sem Seguro de Vida</label>
+                </div>
+            </div>
+        </div>
+    
+        <div class="input-section" id="dadosLance" style="display:none;">
+            <h2 id="tituloDadosLance"> Simulação com Lance (Opcional)</h2>
+    
+    
+            <div class="form-group" id="containerPortoPercentualEmbutido" style="display: none;">
+                <label for="portoAutomovelPercentualEmbutido">Percentual Máximo para Lance Embutido (Porto
+                    Automóvel):</label>
+                <select id="portoAutomovelPercentualEmbutido" name="portoAutomovelPercentualEmbutido" class="form-control">
+                    <option value="0.15">15%</option>
+                    <option value="0.20">20%</option>
+                    <option value="0.25">25%</option>
+                    <option value="0.30">30%</option>
+                </select>
+                <small>Selecione o percentual de embutido conforme o grupo.</small>
+            </div>
+    
+            <div class="form-group" id="containerTipoLance">
+                <label id="labelTipoLance">Tipo de Lance:</label>
+                <div id="opcoesTipoLance">
+                    <input type="radio" name="tipoLance" id="tipoLanceNenhum" value="nenhum" checked>
+                    <label for="tipoLanceNenhum" class="radio-label">Sem Lance</label><br>
+    
+                    <div id="opcaoLanceLivreGeralPorto" style="display: none;">
+                        <input type="radio" name="tipoLance" id="tipoLanceLivre" value="livre">
+                        <label for="tipoLanceLivre" class="radio-label">Lance Livre (Porto)</label><br>
+                    </div>
+                    <div id="opcaoLanceFixoImovelPorto" style="display: none;">
+                        <input type="radio" name="tipoLance" id="tipoLanceFixoPortoImovel" value="fixo_porto_imovel">
+                        <label for="tipoLanceFixoPortoImovel" class="radio-label">Lance Fixo Imóvel (Porto - 40% Saldo
+                            Devedor)</label><br>
+                    </div>
+                    <div id="opcaoLanceFixoAutomovelPorto" style="display: none;">
+                        <input type="radio" name="tipoLance" id="tipoLanceFixoPortoAutomovel" value="fixo_porto_automovel">
+                        <label for="tipoLanceFixoPortoAutomovel" class="radio-label">Lance Fixo Automóvel (Porto - 40% Saldo
+                            Devedor)</label><br>
+                    </div>
+    
+                    <div id="opcaoLanceLivreYamaha" style="display: none;">
+                        <input type="radio" name="tipoLance" id="tipoLanceLivreYamaha" value="livre_yamaha">
+                        <label for="tipoLanceLivreYamaha" class="radio-label">Lance Livre (Yamaha)</label><br>
+                    </div>
+                    <div id="opcaoLanceFixoImovelYamaha" style="display: none;">
+                        <input type="radio" name="tipoLance" id="tipoLanceFixoImovelYamaha" value="fixo_yamaha_imovel">
+                        <label for="tipoLanceFixoImovelYamaha" class="radio-label">Lance Fixo Imóvel (Yamaha - 30% Saldo
+                            Devedor)</label><br>
+                    </div>
+    
+                    <!-- Bloco para o Lance Fixo Genérico da Yamaha (Automóvel) -->
+                    <div id="opcaoLanceFixoAutomovelYamaha" style="display: none;">
+                        <input type="radio" name="tipoLance" id="tipoLanceFixoAutomovelYamaha"
+                            value="fixo_yamaha_automovel">
+                        <label for="tipoLanceFixoAutomovelYamaha" class="radio-label">Lance Fixo Automóvel
+                            (Yamaha)</label><br>
+                    </div>
+    
+                    <!-- Container com a NOVA LISTA, que aparecerá abaixo do lance de automóvel -->
+                    <div class="form-group" id="containerYamahaAutomovelOpcoesFixo"
+                        style="display: none; padding-left: 25px; margin-top: -10px;">
+                        <label for="yamahaAutomovelPercentualFixo" style="font-size: 0.9em;">Selecione a Opção de Lance
+                            Fixo:</label>
+                        <select id="yamahaAutomovelPercentualFixo" name="yamahaAutomovelPercentualFixo" class="form-control"
+                            style="max-width: 300px;">
+                            <option value="0.25">Vaga Exclusiva (25%)</option>
+                            <option value="0.35">Grupo Especial (35%)</option>
+                        </select>
+                    </div>
+                    <div id="opcaoLanceItau" style="display: none;">
+                        <input type="radio" name="tipoLance" id="tipoLanceItau" value="lance_itau">
+                        <label for="tipoLanceItau" class="radio-label">Lance Itaú (Livre)</label><br>
+                    </div>
+                </div>
+    
+                <div id="camposLanceFixoPorto" class="campos-lance-especifico" style="display:none;">
+                    <p>Valor Calculado do Lance Fixo (Porto): R$ <span id="valorCalculadoLanceFixoPorto">0.00</span></p>
+                    <input type="hidden" id="valorEscondidoLanceFixoPorto">
+                    <div class="form-group">
+                        <input type="checkbox" id="usarEmbutidoLanceFixoPorto" name="usarEmbutidoLanceFixoPorto" value="sim"
+                            style="margin-right: 5px;">
+                        <label for="usarEmbutidoLanceFixoPorto" class="checkbox-label" id="labelUsarEmbutidoLanceFixoPorto"
+                            style="display: inline; font-weight:normal;">Utilizar Lance Embutido (Porto - até X% do
+                            crédito)</label>
+                    </div>
+                    <div id="detalhesEmbutidoLanceFixoPorto" class="form-group"
+                        style="display:none; padding-left: 20px; border: 1px solid #eee; padding:10px; margin-top:5px; border-radius:4px;">
+                        <p>Valor Máximo Embutido Permitido (Porto): R$ <span id="maximoEmbutidoFixoPortoValor">0.00</span>
+                        </p>
+                        <label for="valorEmbutidoLanceFixoPortoUsar">Valor do Embutido a Usar (R$):</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="valorEmbutidoLanceFixoPortoUsar" placeholder="Ex: 10000"
+                                data-type="currency" min="0">
+                        </div>
+                        <small id="avisoMaxEmbutidoLanceFixoPorto">Não pode exceder o máximo permitido ou o valor do lance
+                            fixo.</small>
+                    </div>
+                </div>
+                <div id="camposLanceItau" class="campos-lance-especifico" style="display:none;">
+                    <p style="font-size:0.9em; margin-bottom:15px;">O lance Itaú é calculado como um percentual sobre o
+                        <strong>valor do crédito</strong>.
+                    </p>
+                    <div class="form-group">
+                        <label for="percentualLanceProprioItau">Percentual do Lance (Recurso Próprio):</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="percentualLanceProprioItau" placeholder="Ex: 20" data-type="percent"
+                                data-precision="2" min="0" max="100">
+                            <span class="input-suffix">%</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="percentualLanceEmbutidoItau">Percentual do Lance Embutido (Opcional):</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="percentualLanceEmbutidoItau" placeholder="Ex: 10" data-type="percent"
+                                data-precision="2" min="0" max="30">
+                            <span class="input-suffix">%</span>
+                        </div>
+                        <small>Máximo de 30% do valor do crédito.</small>
+                    </div>
+                </div>
+    
+                <div id="camposLanceLivre" class="campos-lance-especifico" style="display:none;">
+                    <div class="form-group">
+                        <label for="valorLanceLivre">Valor do Lance Livre (Porto - R$):</label>
+                        <input type="text" id="valorLanceLivre" placeholder="Ex: 15.000,00" data-type="currency">
+                    </div>
+                    <p style="text-align: center; margin: 5px 0;">OU</p>
+                    <div class="form-group">
+                        <label for="percentualLanceLivre">Percentual do Lance Livre (Porto - sobre Saldo Devedor):</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="percentualLanceLivre" placeholder="Ex: 30" data-type="percent"
+                                data-precision="2" min="0" max="100">
+                            <span class="input-suffix">%</span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <input type="checkbox" id="usarEmbutidoLanceLivre" name="usarEmbutidoLanceLivre" value="sim"
+                            style="margin-right: 5px;">
+                        <label for="usarEmbutidoLanceLivre" class="checkbox-label" id="labelUsarEmbutidoLanceLivre"
+                            style="display: inline; font-weight:normal;">Utilizar Lance Embutido (Porto - até X% do
+                            crédito)</label>
+                    </div>
+                    <div id="detalhesEmbutidoLanceLivre" class="form-group"
+                        style="display:none; padding-left: 20px; border: 1px solid #eee; padding:10px; margin-top:5px; border-radius:4px;">
+                        <p>Valor Máximo Embutido Permitido (Porto): R$ <span id="maximoEmbutidoLivreValor">0.00</span></p>
+                        <label for="valorEmbutidoLanceLivreUsar">Valor do Embutido a Usar (R$):</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="valorEmbutidoLanceLivreUsar" placeholder="Ex: 10000" data-type="currency"
+                                min="0">
+                        </div>
+                        <small id="avisoMaxEmbutidoLanceLivre">Não pode exceder o máximo permitido ou o valor do
+                            lance.</small>
+                    </div>
+                </div>
+    
+                <div id="camposLanceLivreYamaha" class="campos-lance-especifico" style="display:none;">
+                    <div class="form-group">
+                        <label for="valorLanceLivreYamaha">Valor do Lance Livre (Yamaha - R$):</label>
+                        <input type="text" id="valorLanceLivreYamaha" placeholder="Ex: 10.000,00" data-type="currency">
+                    </div>
+                    <p style="text-align: center; margin: 5px 0;">OU</p>
+                    <div class="form-group">
+                        <label for="percentualLanceLivreYamaha">Percentual do Lance Livre (Yamaha - sobre Saldo
+                            Devedor):</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="percentualLanceLivreYamaha" placeholder="Ex: 25" data-type="percent"
+                                data-precision="2" min="0" max="100">
+                            <span class="input-suffix">%</span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <input type="checkbox" id="usarEmbutidoLanceLivreYamaha" name="usarEmbutidoLanceLivreYamaha"
+                            value="sim" style="margin-right: 5px;">
+                        <label for="usarEmbutidoLanceLivreYamaha" class="checkbox-label"
+                            id="labelUsarEmbutidoLanceLivreYamaha" style="display: inline; font-weight:normal;">Utilizar
+                            Lance Embutido (Yamaha - até X% do
+                            crédito)</label>
+                    </div>
+                    <div id="detalhesEmbutidoLanceLivreYamaha" class="form-group"
+                        style="display:none; padding-left: 20px; border: 1px solid #eee; padding:10px; margin-top:5px; border-radius:4px;">
+                        <p>Valor Máximo Embutido Permitido (Yamaha): R$ <span
+                                id="maximoEmbutidoLivreYamahaValor">0.00</span>
+                        </p>
+                        <label for="valorEmbutidoLanceLivreYamahaUsar">Valor do Embutido a Usar (R$):</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="valorEmbutidoLanceLivreYamahaUsar" placeholder="Ex: 5000"
+                                data-type="currency" min="0">
+                        </div>
+                        <small id="avisoMaxEmbutidoLanceLivreYamaha">Não pode exceder o máximo permitido ou o valor do
+                            lance.</small>
+                    </div>
+                </div>
+    
+                <div id="camposLanceFixoImovelYamaha" class="campos-lance-especifico" style="display:none;">
+                    <p>Valor Calculado do Lance Fixo Imóvel (Yamaha): R$ <span
+                            id="valorCalculadoLanceFixoImovelYamaha">0.00</span></p>
+                    <input type="hidden" id="valorEscondidoLanceFixoImovelYamaha">
+                    <div class="form-group" style="margin-top: 15px;">
+                        <input type="checkbox" id="usarEmbutidoFixoImovelYamaha" name="usarEmbutidoFixoImovelYamaha"
+                            value="sim" style="margin-right: 5px;">
+                        <label for="usarEmbutidoFixoImovelYamaha" class="checkbox-label"
+                            id="labelUsarEmbutidoFixoImovelYamaha" style="display: inline; font-weight:normal;">Utilizar
+                            Lance Embutido Auxiliar (Yamaha Imóvel - até
+                            25% do crédito)</label>
+                    </div>
+                    <div id="detalhesEmbutidoFixoImovelYamaha" class="form-group"
+                        style="display:none; padding-left: 20px; border: 1px solid #eee; padding:10px; margin-top:5px; border-radius:4px;">
+                        <p>Valor Máximo Embutido Auxiliar Permitido (Yamaha Imóvel): R$ <span
+                                id="maximoEmbutidoFixoImovelYamahaValor">0.00</span></p>
+                        <label for="valorEmbutidoFixoImovelYamahaUsar">Valor do Embutido Auxiliar a Usar (R$):</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="valorEmbutidoFixoImovelYamahaUsar" placeholder="Ex: 4000"
+                                data-type="currency" min="0">
+                        </div>
+                        <small id="avisoMaxEmbutidoFixoImovelYamaha">Não pode exceder o máximo permitido ou o valor do lance
+                            fixo.</small>
+                    </div>
+                </div>
+    
+                <div id="camposLanceFixoVagaExclusivaYamahaAutomovel" class="campos-lance-especifico" style="display:none;">
+                    <p>Valor Calculado do Lance Fixo Vaga Exclusiva (Yamaha Automóvel): R$ <span
+                            id="valorCalculadoLanceFixoVagaExclusivaYamahaAutomovel">0.00</span></p>
+                    <input type="hidden" id="valorEscondidoLanceFixoVagaExclusivaYamahaAutomovel">
+                    <div class="form-group" style="margin-top: 15px;">
+                        <input type="checkbox" id="usarEmbutidoFixoVagaExclusivaYamahaAutomovel"
+                            name="usarEmbutidoFixoVagaExclusivaYamahaAutomovel" value="sim" style="margin-right: 5px;">
+                        <label for="usarEmbutidoFixoVagaExclusivaYamahaAutomovel" class="checkbox-label"
+                            id="labelUsarEmbutidoFixoVagaExclusivaYamahaAutomovel"
+                            style="display: inline; font-weight:normal;">Utilizar Lance Embutido Auxiliar (Yamaha Automóvel
+                            -
+                            até 15% do crédito)</label>
+                    </div>
+                    <div id="detalhesEmbutidoFixoVagaExclusivaYamahaAutomovel" class="form-group"
+                        style="display:none; padding-left: 20px; border: 1px solid #eee; padding:10px; margin-top:5px; border-radius:4px;">
+                        <p>Valor Máximo Embutido Auxiliar Permitido (Yamaha Automóvel): R$ <span
+                                id="maximoEmbutidoFixoVagaExclusivaYamahaAutomovelValor">0.00</span></p>
+                        <label for="valorEmbutidoFixoVagaExclusivaYamahaAutomovelUsar">Valor do Embutido Auxiliar a Usar
+                            (R$):</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="valorEmbutidoFixoVagaExclusivaYamahaAutomovelUsar" placeholder="Ex: 3000"
+                                data-type="currency" min="0">
+                        </div>
+                        <small id="avisoMaxEmbutidoFixoVagaExclusivaYamahaAutomovel">Não pode exceder o máximo permitido ou
+                            o
+                            valor do lance fixo.</small>
+                    </div>
+                </div>
+    
+    
+                <div class="form-group" id="formaAbatimentoLanceContainer" style="display:none; margin-top: 15px;">
+                    <label for="formaAbatimentoLance">Como usar o lance (após contemplação)?</label>
+                    <select id="formaAbatimentoLance" name="formaAbatimentoLance" class="form-control">
+                        <option value="reduzir_valor_parcela" selected>Reduzir Valor da Parcela (mantendo prazo)</option>
+                        <option value="reduzir_prazo_final">Reduzir Prazo (quitando parcelas do final)</option>
+                    </select>
+                </div>
+    
+                <div class="form-group" id="estimativaContemplacaoContainer"
+                    style="margin-top: 20px; padding-top:15px; border-top: 1px solid #ddd;">
+                    <!--<h3>Estimativa de Contemplação</h3>
+                <label for="mesesPagosAntesDoLance">Simular contemplação por lance após quantos meses já pagos?</label>
+                <input type="number" id="mesesPagosAntesDoLance" name="mesesPagosAntesDoLance" class="form-control"
+                    style="max-width: 100px; margin-bottom: 5px;" placeholder="Ex: 0" min="0" step="1">
+                <small>Deixe 0 ou em branco se o lance for no início do plano. Este valor ajustará o saldo devedor antes do
+                    cálculo do lance.</small>
+                <p
+                    style="font-size: 0.85em; color: #6c757d; margin-top: 10px; padding: 8px; background-color: #f8f9fa; border-radius: 4px;">
+                    <strong>Atenção:</strong> Esta é apenas uma estimativa para simular o impacto de um lance após alguns
+                    pagamentos.
+                    A contemplação real dependerá das regras do grupo, dos sorteios e dos lances ofertados pelos demais
+                    participantes na assembleia.
+                </p>-->
+                </div>
+            </div>
+    
+            <button id="btnSimular" class="btn-primario btn-azul"
+                style="width:100%; max-width:300px; margin-top: 20px; margin-bottom:20px;">Calcular Simulação
+                Completa</button>
+            <p id="erroSimulacao" class="error-message" style="display: none;"></p>
+    
+            <div class="results-section" id="areaResultadosSimulacao" style="display: none;">
+    
+                <div class="pdf-wrapper" style="margin: 0 auto; box-shadow: none;">
+                    <header class="header">
+                        <img src="../assets/LogoBranca.png" alt="Logo" class="logo">
+                        <div class="header-text">
+                            <p class="simulacao-titulo">Simulação</p>
+                            <p class="cliente-nome" id="resultadoNomeCliente"></p>
+                        </div>
+                        <div class="onda">
+                            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
+                                preserveAspectRatio="none">
+                                <path d="M0,27.35 C150,80,350,0,600,0 C850,0,1050,80,1200,10 V120H0Z" class="shape-fill">
+                                </path>
+                            </svg>
+                        </div>
+                    </header>
+    
+                    <main class="main-content">
+                        <section>
+                            <p class="resultado-titulo" style="font-size: 1.4em;">Oportunidade <span
+                                    id="tipoBemResultado"></span></p>
+                            <p class="resultado-titulo" style="margin-top: -15px;"><span id="nomeAdminResultado"></span></p>
+                        </section>
+    
+                        <section>
+                            <p class="secao-titulo">Valores de Crédito</p>
+                            <div class="info-bloco">
+                                <div class="info-linha">
+                                    <span>Crédito Contratado:</span>
+                                    <span id="resultadoCreditoContratado"></span>
+                                </div>
+                                <div class="info-linha" id="containerCreditoLiquido" style="display: none;">
+                                    <span>Crédito líquido (Pós-Contemplação):</span>
+                                    <span id="resultadoCreditoLiquido"
+                                        style="color: rgb(136, 201, 38); font-size: 1.2em;"></span>
+                                </div>
+                            </div>
+                        </section>
+    
+                        <section>
+                            <p class="secao-titulo">Parcela e Prazo</p>
+                            <div class="info-bloco">
+                                <div class="info-linha" id="containerParcelaComRedutor">
+                                    <span>Parcela Com Redução de <span id="resultadoPercentualRedutor"></span>%:</span>
+                                    <span id="resultadoParcelaComRedutor" style="font-size: 1.2em;"></span>
+                                </div>
+                                <div class="info-linha">
+                                    <span>Parcela Integral:</span>
+                                    <span id="resultadoParcelaBaseSemRedutor"></span>
+                                </div>
+                                <div class="info-linha" id="resultadosComLance_novaParcela" style="display: none;">
+                                    <span>Parcela (Pós-Contemplação):</span>
+                                    <span id="resultadoParcelaPosContemplacao"
+                                        style="color: rgb(136, 201, 38); font-size: 1.2em;"></span>
+                                </div>
+                                <div class="info-linha">
+                                    <span>Prazo:</span>
+                                    <span id="resultadoPrazoComLance"></span>
+                                </div>
+                            </div>
+                        </section>
+    
+                        <section id="resultadosComLance" style="display: none;">
+                            <p class="secao-titulo">Simulação de Lance</p>
+                            <div class="info-bloco">
+                                <div class="info-linha">
+                                    <span>Percentual do Lance:</span>
+                                    <span id="resultadoPercentualLance"></span>
+                                </div>
+                                <div class="info-linha">
+                                    <span>Recurso Próprio (Valor do Bolso):</span>
+                                    <span class="valor-bolso" id="resultadoValorLanceDoBolso"></span>
+                                </div>
+                                <div class="info-linha">
+                                    <span>Lance Embutido:</span>
+                                    <span id="resultadoValorEmbutidoUtilizado"></span>
+                                </div>
+                                <div class="info-linha">
+                                    <span>Tipo de Lance:</span>
+                                    <span id="resultadoTipoLanceOfertado"></span>
+                                </div>
+                            </div>
+                        </section>
+    
+                        <section id="blocoResultadoAdesao" style="display: none;">
+                            <p class="secao-titulo">Condição Especial</p>
+                            <div class="info-bloco">
+                                <div class="info-linha adesao">
+                                    <span id="labelResultadoAdesao">Valor das Primeiras X Parcelas:</span>
+                                    <span id="valorResultadoAdesao"></span>
+                                </div>
+                            </div>
+                        </section>
+    
+                        <footer class="footer">
+                            <p class="aviso-legal">Esta é uma simulação meramente ilustrativa. As condições podem variar e
+                                estão sujeitas à análise e aprovação da administradora.</p>
+                            <div class="footer-info">
+                                <span id="resultadoDataSimulacao"></span>
+                                <span id="resultadoGeradoPor"></span>
+                            </div>
+                        </footer>
+    
+                        <div style="text-align: center; margin-top: 20px; padding-bottom: 10px;">
+                            <button id="btnImprimirPDF" class="btn-secundario">Imprimir Simulação em PDF</button>
+                        </div>
+    
+                    </main>
+                </div>
+            </div>
+    
+</body>
+</html>

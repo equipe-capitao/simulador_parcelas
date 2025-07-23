@@ -1,0 +1,426 @@
+input[type="text"],
+input[type="date"],
+input[type="number"],
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="number"]:focus,
+.form-group select:focus {
+    border-color: #0055aa;
+    /* Cor azul da borda ao focar */
+    outline: 0;
+    /* Remove a borda padrão do navegador */
+    box-shadow: 0 0 0 3px rgba(0, 85, 170, 0.2);
+    /* Sombra suave azulada */
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    text-align: center;
+    color: #003366;
+}
+
+.input-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background-color: #fdfdfd;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #003366;
+}
+
+.form-group label.radio-label {
+    font-weight: normal;
+    color: #444;
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+/* --- ESTILOS ESPECÍFICOS PARA A SEÇÃO DE RESULTADOS --- */
+/* Usando #areaResultadosSimulacao para garantir que estas regras só se apliquem aqui */
+
+#areaResultadosSimulacao .pdf-wrapper {
+    width: 210mm;
+    max-width: 100%;
+    min-height: auto;
+    /* Altura automática para a tela */
+    margin: 0 auto;
+    background-color: white;
+    display: block;
+    flex-direction: column;
+    box-shadow: none;
+    /* Remove sombra extra dentro da caixa */
+}
+
+#areaResultadosSimulacao .header {
+    background-color: #0A183D;
+    color: white;
+    padding: 25px 40px 100px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+#areaResultadosSimulacao .header .logo {
+    max-height: 90px;
+    z-index: 10;
+}
+
+#areaResultadosSimulacao .header .header-text {
+    text-align: right;
+    z-index: 10;
+}
+
+#areaResultadosSimulacao .header .simulacao-titulo {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+#areaResultadosSimulacao .header .cliente-nome {
+    margin: 0;
+    font-size: 29px;
+    font-weight: 700;
+}
+
+#areaResultadosSimulacao .onda {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+
+#areaResultadosSimulacao .onda svg {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100px;
+}
+
+#areaResultadosSimulacao .onda .shape-fill {
+    fill: #FFFFFF;
+}
+
+#areaResultadosSimulacao .main-content {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 30px;
+    margin: -40px 30px 0 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+    position: relative;
+    z-index: 100;
+    flex-grow: 0;
+}
+
+#areaResultadosSimulacao .main-content .resultado-titulo {
+    font-weight: 700;
+    font-size: 16px;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#areaResultadosSimulacao .main-content .secao-titulo {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0A183D;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 8px;
+    margin-top: 25px;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+#areaResultadosSimulacao .info-bloco {
+    padding: 10px 20px;
+}
+
+#areaResultadosSimulacao .info-linha {
+    display: flex;
+    justify-content: flex-start;
+    /* Alinhamento ao lado */
+    align-items: baseline;
+    font-size: 15px;
+    padding: 6px 0;
+}
+
+#areaResultadosSimulacao .info-linha span:first-child {
+    font-weight: 400;
+    flex-grow: 0;
+    /* Impede o título de esticar */
+    padding-right: 0;
+}
+
+#areaResultadosSimulacao .info-linha span:last-child {
+    font-weight: 700;
+    text-align: left;
+    /* Alinhamento à esquerda */
+    min-width: auto;
+    /* Remove largura mínima */
+    margin-left: 8px;
+    /* Espaço entre título e valor */
+}
+
+/* Estilo para valores destacados */
+#areaResultadosSimulacao .info-bloco .info-linha span[style*="color: rgb(136, 201, 38)"] {
+    font-size: 1.25em;
+    font-weight: 700;
+}
+
+#areaResultadosSimulacao .info-bloco .info-linha .valor-bolso {
+    color: rgb(136, 201, 38);
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+#areaResultadosSimulacao .footer {
+    padding: 20px 40px;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 25px;
+}
+
+#areaResultadosSimulacao .footer .aviso-legal {
+    font-size: 10px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#areaResultadosSimulacao .footer .footer-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #333;
+}
+
+@media (max-width: 992px) {
+
+    #areaResultadosSimulacao .pdf-wrapper {
+        width: 100%;
+        min-height: auto;
+        margin: 0;
+        display: block;
+    }
+
+    #areaResultadosSimulacao .header {
+        padding: 20px 20px 80px 20px;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    #areaResultadosSimulacao .header .header-text {
+        text-align: center;
+        /* Centraliza o texto do cabeçalho */
+    }
+
+    /* 3. Remove a margem que faz o cartão sobrepor o cabeçalho */
+    #areaResultadosSimulacao .main-content {
+        margin: -60px 15px 20px 15px;
+        /* Ajusta a margem para a sobreposição funcionar */
+        padding: 20px;
+        flex-grow: 0;
+        /* Garante que não tenha crescimento indevido */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        /* Sombra mais sutil */
+    }
+
+    /* 4. Ajusta o rodapé */
+    #areaResultadosSimulacao .footer {
+        padding: 20px;
+    }
+}
+
+.input-section h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    text-align: center;
+    color: #003366;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #003366;
+}
+
+.form-group label.radio-label {
+    font-weight: normal;
+    color: #444;
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+/* --- ESTILOS ESPECÍFICOS PARA A SEÇÃO DE RESULTADOS --- */
+#areaResultadosSimulacao .pdf-wrapper {
+    width: 100%;
+    max-width: 794px;
+    /* Largura de uma folha A4 */
+    min-height: auto;
+    margin: 0 auto;
+    background-color: white;
+    display: block;
+}
+
+#areaResultadosSimulacao .header {
+    background-color: #0A183D;
+    color: white;
+    padding: 25px 40px 100px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+#areaResultadosSimulacao .header .logo {
+    max-height: 90px;
+}
+
+#areaResultadosSimulacao .header .header-text {
+    text-align: right;
+}
+
+#areaResultadosSimulacao .onda {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+
+#areaResultadosSimulacao .onda svg {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100px;
+}
+
+#areaResultadosSimulacao .onda .shape-fill {
+    fill: #FFFFFF;
+}
+
+#areaResultadosSimulacao .main-content {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 30px;
+    margin: -40px 30px 0 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+    position: relative;
+    z-index: 100;
+}
+
+#areaResultadosSimulacao .main-content .secao-titulo {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0A183D;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 8px;
+    margin-top: 25px;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+#areaResultadosSimulacao .info-bloco {
+    padding: 10px 20px;
+}
+
+#areaResultadosSimulacao .info-linha {
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+    font-size: 15px;
+    padding: 6px 0;
+}
+
+#areaResultadosSimulacao .info-linha span:first-child {
+    font-weight: 400;
+    flex-grow: 0;
+}
+
+#areaResultadosSimulacao .info-linha span:last-child {
+    font-weight: 700;
+    text-align: left;
+    min-width: auto;
+    margin-left: 8px;
+}
+
+#areaResultadosSimulacao .footer {
+    padding: 20px 40px;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 25px;
+}
+
+button#btnSimular,
+button#btnImprimirPDF {
+    display: block;
+    width: 100%;
+    max-width: 350px;
+    margin: 25px auto 15px auto;
+    padding: 13px 25px;
+    background-color: rgb(136, 201, 38);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+button#btnSimular:hover,
+button#btnImprimirPDF:hover {
+    background-color: #79b321;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+}
+
+button#btnSimular:active,
+button#btnImprimirPDF:active {
+    background-color: #6a9c1d;
+    box-shadow: none;
+    transform: translateY(0);
+}
