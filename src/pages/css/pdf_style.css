@@ -14,7 +14,7 @@ body {
 
 /* --- Container da Página na Tela --- */
 .pdf-wrapper {
-    width: 210mm;
+    width: 100%;
     min-height: 297mm;
     margin: 30px auto;
     background-color: white;
@@ -67,14 +67,14 @@ body {
 
 .header .simulacao-titulo {
     margin: 0;
-    font-size: 24px;
+    font-size: 15px;
     font-weight: 400;
     /* Poppins Regular */
 }
 
 .header .cliente-nome {
     margin: 0;
-    font-size: 29px;
+    font-size: 34px;
     font-weight: 700;
     /* Poppins Bold */
 }

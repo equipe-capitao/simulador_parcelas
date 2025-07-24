@@ -1779,9 +1779,10 @@
       }
 
       const container = document.createElement("div");
-      container.style.position = "fixed";
+      container.style.position = "absolute";
       container.style.left = "-9999px";
       container.style.top = "0px";
+      container.style.width = "210mm";
       container.innerHTML = htmlFinal;
       document.body.appendChild(container);
 
@@ -1790,6 +1791,7 @@
         {
           scale: 2.5,
           useCORS: true,
+          backgroundColor: "#0A183D",
         }
       );
 
@@ -1828,7 +1830,7 @@
     } = data;
 
     const { admin, tipoBem, valorCredito, nomeCliente } = dadosCredito;
-    const nomeUsuarioLogado = "Simulador Web";
+    const nomeUsuarioLogado = "Simulador Web"; // API de usuario.
 
     if (resultadoNomeCliente) {
       resultadoNomeCliente.textContent = nomeCliente || "Não informado";
