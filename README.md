@@ -1,20 +1,22 @@
-# Simulador de Parcelas 
+# Simulador de Parcelas de Consórcio
 
-Simulador de valores de Consórcio
+Uma aplicação web desenvolvida para simular valores de consórcio para a **Capitão Consórcios**.
 
+## ✨ Funcionalidades
 
-<h1>Funções nesta aplicação web:
+- **Simulação de Parcelas:** Calcule os valores de um consórcio de forma simples e intuitiva.
+- **Cálculo com Lances:** Adicione a opção de lance para visualizar cenários de antecipação.
+- **Exportação em PDF:** Imprima a simulação em um arquivo PDF com o layout personalizado da Capitão Consórcios.
 
-<td> 1° Simular parcelas de consórcios com opções de lances.</td>
-<td> 2° Imprimir em PDF com layout Unico da Capitao Consórcios. </td>
-</h1>
-👨‍💻 Autor e Desenvolvedor
+---
+
+## 👨‍💻 Autor e Desenvolvedor
+
 <p>
-<img align="left" src="https://avatars.githubusercontent.com/u/101883398?v=4" width="80" height="80" style="border-radius:50%;">
-<strong>Gustavo (Guzinn01)</strong><br>
-Desenvolvedor responsável pelo projeto.<br>
-<a href="https://github.com/Guzinn01">
-<img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />
-</a>
+  <img align="left" src="https://avatars.githubusercontent.com/u/101883398?v=4" width="80" height="80" style="border-radius:50%;">
+  <strong>Gustavo (Guzinn01)</strong><br>
+  Desenvolvedor responsável pelo projeto.<br>
+  <a href="https://github.com/Guzinn01">
+    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />
+  </a>
 </p>
-<br><br><br>
