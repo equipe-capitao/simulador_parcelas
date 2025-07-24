@@ -182,36 +182,32 @@ h2 {
 }
 
 #areaResultadosSimulacao .info-bloco {
-    padding: 10px 20px;
+    padding: 10px;
 }
 
 #areaResultadosSimulacao .info-linha {
     display: flex;
-    justify-content: flex-start;
-    /* Alinhamento ao lado */
+    justify-content: space-between;
     align-items: baseline;
     font-size: 15px;
-    padding: 6px 0;
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f5;
 }
+#areaResultadosSimulacao .info-linha:last-child {
+    border-bottom: none;
+}
+
 
 #areaResultadosSimulacao .info-linha span:first-child {
     font-weight: 400;
-    flex-grow: 0;
-    /* Impede o título de esticar */
-    padding-right: 0;
+    color: #555;
 }
 
 #areaResultadosSimulacao .info-linha span:last-child {
     font-weight: 700;
-    text-align: left;
-    /* Alinhamento à esquerda */
-    min-width: auto;
-    /* Remove largura mínima */
-    margin-left: 8px;
-    /* Espaço entre título e valor */
+    text-align: right;
 }
 
-/* Estilo para valores destacados */
 #areaResultadosSimulacao .info-bloco .info-linha span[style*="color: rgb(136, 201, 38)"] {
     font-size: 1.25em;
     font-weight: 700;
@@ -243,7 +239,29 @@ h2 {
     color: #333;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 768px) {
+    #areaResultadosSimulacao .info-bloco {
+            padding: 10px;
+        }
+    
+        #areaResultadosSimulacao .info-linha {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 4px;
+            padding: 15px 0;
+            border: none;
+        }
+    
+        #areaResultadosSimulacao .info-linha span:first-child {
+            font-size: 0.9em;
+            font-weight: normal;
+        }
+    
+        #areaResultadosSimulacao .info-linha span:last-child {
+            font-size: 1.4em;
+            text-align: center;
+        }
 
     #areaResultadosSimulacao .pdf-wrapper {
         width: 100%;
@@ -260,21 +278,15 @@ h2 {
 
     #areaResultadosSimulacao .header .header-text {
         text-align: center;
-        /* Centraliza o texto do cabeçalho */
     }
 
-    /* 3. Remove a margem que faz o cartão sobrepor o cabeçalho */
     #areaResultadosSimulacao .main-content {
         margin: -60px 15px 20px 15px;
-        /* Ajusta a margem para a sobreposição funcionar */
         padding: 20px;
         flex-grow: 0;
-        /* Garante que não tenha crescimento indevido */
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        /* Sombra mais sutil */
     }
 
-    /* 4. Ajusta o rodapé */
     #areaResultadosSimulacao .footer {
         padding: 20px;
     }
@@ -382,29 +394,6 @@ h2 {
     text-align: left;
 }
 
-#areaResultadosSimulacao .info-bloco {
-    padding: 10px 20px;
-}
-
-#areaResultadosSimulacao .info-linha {
-    display: flex;
-    justify-content: flex-start;
-    align-items: baseline;
-    font-size: 15px;
-    padding: 6px 0;
-}
-
-#areaResultadosSimulacao .info-linha span:first-child {
-    font-weight: 400;
-    flex-grow: 0;
-}
-
-#areaResultadosSimulacao .info-linha span:last-child {
-    font-weight: 700;
-    text-align: left;
-    min-width: auto;
-    margin-left: 8px;
-}
 
 #areaResultadosSimulacao .footer {
     padding: 20px 40px;
