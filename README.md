@@ -4,8 +4,8 @@ Simulador de valores de Consórcio
 
 Funções nesta aplicação web:
 
-1° Simular parcelas de consórcios com opções de lances.
-2° Imprimir em PDF com layout Unico da Capitao Consórcios.
+<h1> 1° Simular parcelas de consórcios com opções de lances.
+<h2> 2° Imprimir em PDF com layout Unico da Capitao Consórcios.
 
 👨‍💻 Autor e Desenvolvedor
 <p>
