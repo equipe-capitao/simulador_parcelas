@@ -43,7 +43,6 @@ function realizarCalculoSimulacao(dadosCredito, dadosLanceInput) {
       };
     }
 
-    // --- 2. CÁLCULO DOS VALORES INICIAIS ---
     const taxaAdmTotalValor =
       valorCreditoOriginal * (taxaAdmTotalPercent / 100.0);
     const fundoReservaTotalValor =
@@ -76,7 +75,6 @@ function realizarCalculoSimulacao(dadosCredito, dadosLanceInput) {
       }
     }
 
-    // --- 3. CÁLCULO DAS PARCELAS INICIAIS ---
     const parcelaBaseSemSeguro =
       prazoTotalConsorcio > 0 ? saldoDevedorOriginal / prazoTotalConsorcio : 0;
     const parcelaComRedutorSemSeguro =
@@ -85,7 +83,6 @@ function realizarCalculoSimulacao(dadosCredito, dadosLanceInput) {
     const parcelaComRedutorCompleta =
       parcelaComRedutorSemSeguro + seguroVidaMensalFixo;
 
-    // --- 4. SIMULAÇÃO DE PAGAMENTOS PRÉ-LANCE ---
     const saldoDevedorVigente =
       saldoDevedorOriginal - parcelaComRedutorSemSeguro * mesesPagosAntesLance;
     const prazoRestanteVigente = prazoTotalConsorcio - mesesPagosAntesLance;
@@ -96,7 +93,6 @@ function realizarCalculoSimulacao(dadosCredito, dadosLanceInput) {
       );
     }
 
-    // --- 5. CÁLCULO DO LANCE ---
     const lanceCalculadoObj = {
       tipo: dadosLanceInput.tipo || "nenhum",
       valorCalculado: 0.0,
@@ -200,7 +196,6 @@ function realizarCalculoSimulacao(dadosCredito, dadosLanceInput) {
       }
     }
 
-    // --- 6. RECÁLCULO PÓS-LANCE ---
     const creditoLiquidoAposEmbutido =
       valorCreditoOriginal - lanceCalculadoObj.valorEmbutido;
     let parcelaPosContemplacaoFinal = parcelaComRedutorCompleta;
@@ -216,12 +211,10 @@ function realizarCalculoSimulacao(dadosCredito, dadosLanceInput) {
         const saldoAposLance =
           saldoDevedorBruto - lanceCalculadoObj.valorCalculado;
 
-        // REGRA ATUALIZADA: Aplica lógica especial para IMÓVEL e para PORTO AUTOMÓVEL
         if (
           tipoBem === "imovel" ||
           (admin === "porto" && tipoBem === "automovel")
         ) {
-          // LÓGICA ESPECIAL: Abate UMA parcela e 1 mês do prazo
           const saldoFinalParaDividir =
             saldoAposLance - parcelaComRedutorCompleta;
           prazoFinalResultado =
@@ -280,5 +273,3 @@ function realizarCalculoSimulacao(dadosCredito, dadosLanceInput) {
     return { erro: `Erro na simulação: ${e.message}`, traceback: e.stack };
   }
 }
-
-module.exports = { realizarCalculoSimulacao };

@@ -1,5 +1,3 @@
-// renderer_simulador_parcelas.js
-
 (function () {
   console.log(
     "[Simulador Parcelas] Script carregado. Iniciando configuração (dentro da IIFE)..."
@@ -35,10 +33,8 @@
       return;
     }
 
-    // Converte os dígitos para um número, tratando como centavos
     const valueAsNumber = parseInt(digitsOnly, 10) / 100;
 
-    // Formata o número de volta para o padrão de moeda do Brasil (ex: "R$ 120.000,00")
     input.value = new Intl.NumberFormat("pt-BR", {
       style: "currency",
       currency: "BRL",
@@ -69,11 +65,9 @@
     if (typeof value !== "string" || !value) return NaN;
 
     if (dataType === "currency") {
-      // Pega apenas os dígitos do texto (ex: "R$ 120.000,00" -> "12000000")
       const digitsOnly = value.replace(/\D/g, "");
       if (digitsOnly === "") return NaN;
 
-      // Converte para número e divide por 100 para ter o valor em reais (ex: 12000000 -> 120000.00)
       const numberValue = parseFloat(digitsOnly) / 100;
       return isNaN(numberValue) ? NaN : numberValue;
     } else if (dataType === "percent") {
@@ -82,7 +76,6 @@
       return isNaN(num) ? NaN : num;
     }
 
-    // Fallback para outros tipos, caso existam
     const num = parseFloat(value);
     return isNaN(num) ? NaN : num;
   }
@@ -1363,7 +1356,7 @@
     }
     const admin = adminEl.value;
     const tipoBem = tipoBemEl.value;
-    const tipoCliente = tipoClienteEl.value; // 'cpf' é "Com Seguro", 'cnpj' é "Sem Seguro"
+    const tipoCliente = tipoClienteEl.value;
     const prefix = `${admin}${
       tipoBem.charAt(0).toUpperCase() + tipoBem.slice(1)
     }`;
@@ -1398,7 +1391,7 @@
         document.getElementById(`${prefix}FundoReserva`)?.value,
         "percent"
       ),
-      seguroVida: seguroVidaPercent, // Usamos a variável que acabamos de calcular
+      seguroVida: seguroVidaPercent,
       redutorParcela: getNumericValue(
         document.getElementById(`${prefix}RedutorParcela`)?.value,
         "percent"
@@ -1458,7 +1451,7 @@
       !tipoLanceEl ||
       tipoLanceEl.value === "nenhum"
     ) {
-      return { tipo: "nenhum" }; // Retorna um objeto indicando que não há lance
+      return { tipo: "nenhum" };
     }
 
     const admin = adminEl.value;
@@ -1488,7 +1481,6 @@
           0;
       }
     } else if (admin === "porto") {
-      // A lógica para Porto Seguro permanece a mesma que você já tinha
       if (tipoLance === "livre") {
         dadosLance.valorLanceLivre =
           getNumericValue(valorLanceLivreInput?.value, "currency") || 0;
@@ -1561,17 +1553,116 @@
 
     return dadosLance;
   }
+  function calcularSimulacaoNoNavegador(payload) {
+    const { credito, lance } = payload;
 
-  async function simularConsorcio() {
-    if (erroSimulacaoP) erroSimulacaoP.textContent = "";
+    const valorCredito = credito.valorCredito || 0;
+    const prazo = credito.numeroParcelas || 0;
+    const taxaAdm = (credito.taxaAdm || 0) / 100;
+    const fundoReserva = (credito.fundoReserva || 0) / 100;
+    const seguroVida = (credito.seguroVida || 0) / 100;
+    const redutorParcela = (credito.redutorParcela || 0) / 100;
+
+    if (prazo === 0) return { erro: "Número de parcelas não pode ser zero." };
+
+    const valorTotalTaxaAdm = valorCredito * taxaAdm;
+    const valorTotalFundoReserva = valorCredito * fundoReserva;
+    const saldoDevedorBase =
+      valorCredito + valorTotalTaxaAdm + valorTotalFundoReserva;
+
+    const parcelaPura = valorCredito / prazo;
+    const valorTaxaAdmMensal = valorTotalTaxaAdm / prazo;
+    const valorFundoReservaMensal = valorTotalFundoReserva / prazo;
+
+    let baseCalculoSeguro = valorCredito;
+    if (credito.admin === "porto" || credito.admin === "yamaha") {
+      baseCalculoSeguro = saldoDevedorBase;
+    }
+    const valorSeguroVidaMensal =
+      credito.tipoCliente === "cpf" ? baseCalculoSeguro * seguroVida : 0;
+
+    const parcelaOriginal =
+      parcelaPura +
+      valorTaxaAdmMensal +
+      valorFundoReservaMensal +
+      valorSeguroVidaMensal;
+
+    let parcelaComRedutor = parcelaOriginal;
+    if (redutorParcela > 0) {
+      const baseReduzivel =
+        parcelaPura + valorTaxaAdmMensal + valorFundoReservaMensal;
+      parcelaComRedutor =
+        baseReduzivel * (1 - redutorParcela) + valorSeguroVidaMensal;
+    }
+
+    let adesaoMensal = 0;
+    if (
+      credito.admin === "porto" &&
+      credito.tipoBem === "imovel" &&
+      credito.adesao > 0
+    ) {
+      adesaoMensal =
+        (valorCredito * (credito.adesao / 100)) /
+        parseInt(credito.formaPagamentoAdesao, 10);
+    }
+
+    let resultadoLance = { tipo: "nenhum" };
+    let creditoLiquido = valorCredito;
+    let parcelaPosContemplacao = parcelaComRedutor;
+    let prazoComLance = prazo;
+
+    if (lance.tipo !== "nenhum") {
+      let valorTotalLance = 0;
+      if (lance.tipo.includes("fixo")) {
+        valorTotalLance = saldoDevedorBase * 0.4;
+      } else {
+        valorTotalLance =
+          lance.valorLanceLivre ||
+          saldoDevedorBase * (lance.percentualLanceLivre / 100);
+      }
+
+      const valorEmbutido = lance.usarEmbutido ? lance.valorEmbutido : 0;
+      const valorDoBolso = valorTotalLance - valorEmbutido;
+      creditoLiquido = valorCredito - valorEmbutido;
+
+      if (lance.formaAbatimento === "reduzir_valor_parcela") {
+        const novoSaldoDevedor = saldoDevedorBase - valorTotalLance;
+        parcelaPosContemplacao =
+          novoSaldoDevedor / prazo + valorSeguroVidaMensal;
+      } else {
+        const parcelasPagasPeloLance = Math.floor(
+          valorTotalLance / parcelaComRedutor
+        );
+        prazoComLance = prazo - parcelasPagasPeloLance;
+      }
+
+      resultadoLance = {
+        ...lance,
+        valorDoBolso,
+        valorEmbutido,
+        percentualOfertado: (valorTotalLance / saldoDevedorBase) * 100,
+      };
+    }
+
+    return {
+      erro: null,
+      lance: resultadoLance,
+      parcelaComRedutor,
+      parcelaOriginal,
+      creditoLiquido,
+      parcelaPosContemplacao,
+      prazoComLance,
+      adesaoMensal,
+      percentualRedutor: credito.redutorParcela,
+    };
+  }
+
+  function simularConsorcio() {
+    if (erroSimulacaoP) erroSimulacaoP.style.display = "none";
     setElementVisibility(areaResultadosSimulacaoDiv, false);
 
     const dadosCredito = getDadosCreditoFromForm();
     if (!dadosCredito) {
-      if (btnSimular) {
-        btnSimular.disabled = false;
-        btnSimulacaoP.textContent = "Calcular Simulação Completa";
-      }
       return;
     }
 
@@ -1581,63 +1672,150 @@
       lance: dadosLance,
     };
 
-    if (btnSimular) {
-      btnSimular.disabled = true;
-      btnSimular.textContent = "Simulando...";
-    }
-
-    if (typeof window.electronAPI?.invoke !== "function") {
-      console.error(
-        "[Simulador Parcelas] Erro: electronAPI.invoke não está definida."
-      );
-      if (erroSimulacaoP) {
-        erroSimulacaoP.textContent =
-          "Erro de configuração: Comunicação com backend indisponível.";
-        setElementVisibility(erroSimulacaoP, true);
-      }
-      if (btnSimular) {
-        btnSimular.disabled = false;
-        btnSimular.textContent = "Calcular Simulação Completa";
-      }
-      return;
-    }
+    btnSimular.disabled = true;
+    btnSimular.textContent = "Simulando...";
 
     try {
-      const resultado = await window.electronAPI.invoke(
-        "calcular-simulacao",
-        payload
+      const resultado = realizarCalculoSimulacao(
+        payload.credito,
+        payload.lance
       );
 
       if (resultado.erro) {
-        if (erroSimulacaoP) {
-          erroSimulacaoP.textContent = `Erro na simulação: ${resultado.erro}`;
-          if (resultado.traceback)
-            console.error("Traceback do Erro:", resultado.traceback);
-        }
+        erroSimulacaoP.textContent = `Erro na simulação: ${resultado.erro}`;
         setElementVisibility(erroSimulacaoP, true);
       } else {
         exibirResultados(resultado, dadosCredito);
-        setElementVisibility(areaResultadosSimulacaoDiv, true);
-        if (btnImprimirPDF) setElementVisibility(btnImprimirPDF, true);
       }
     } catch (error) {
-      console.error(
-        "[Simulador Parcelas] Erro ao chamar o backend via IPC:",
-        error
-      );
-      if (erroSimulacaoP)
-        erroSimulacaoP.textContent = `Erro ao comunicar com o backend: ${
-          error.message || String(error)
-        }`;
+      console.error("[Simulador Parcelas Web] Erro ao simular:", error);
+      erroSimulacaoP.textContent = `Erro inesperado durante o cálculo: ${error.message}`;
       setElementVisibility(erroSimulacaoP, true);
     } finally {
-      if (btnSimular) {
-        btnSimular.disabled = false;
-        btnSimular.textContent = "Calcular Simulação Completa";
-      }
+      btnSimular.disabled = false;
+      btnSimular.textContent = "Calcular Simulação Completa";
     }
   }
-  async function exibirResultados(data, dadosCredito) {
+
+  async function gerarPDF() {
+    if (!ultimoResultadoParaPdf) {
+      alert("Por favor, gere uma simulação primeiro antes de imprimir.");
+      return;
+    }
+
+    btnImprimirPDF.disabled = true;
+    btnImprimirPDF.textContent = "Gerando PDF...";
+    if (erroSimulacaoP) erroSimulacaoP.style.display = "none";
+
+    try {
+      const [templateResponse, cssResponse] = await Promise.all([
+        fetch("pdf_template.html"),
+        fetch("css/pdf_style.css"),
+      ]);
+
+      let htmlTemplate = await templateResponse.text();
+      const cssText = await cssResponse.text();
+
+      htmlTemplate = htmlTemplate.replace(
+        "</head>",
+        `<style>${cssText}</style></head>`
+      );
+
+      const { resultado, dadosCredito } = ultimoResultadoParaPdf;
+      const comLance = resultado.lance && resultado.lance.tipo !== "nenhum";
+
+      const placeholders = {
+        "{{LOGO_IMG_TAG}}":
+          '<img src="/src/assets/LogoBranca.png" alt="Logo" class="logo">',
+        "{{NOME_CLIENTE}}": dadosCredito.nomeCliente.toUpperCase() || "N/A",
+        "{{TIPO_BEM}}": dadosCredito.tipoBem.toUpperCase() || "N/A",
+        "{{ADMIN_NOME}}": dadosCredito.admin.toUpperCase() || "N/A",
+        "{{VALOR_CREDITO}}": formatarMoeda(dadosCredito.valorCredito),
+        "{{CREDITO_LIQUIDO}}": comLance
+          ? formatarMoeda(resultado.creditoLiquido)
+          : "",
+        "{{PERC_REDUTOR}}": (resultado.percentualRedutor || 0)
+          .toFixed(2)
+          .replace(".", ","),
+        "{{PARCELA_COM_REDUTOR}}": formatarMoeda(resultado.parcelaComRedutor),
+        "{{PARCELA_INTEGRAL}}": `<s>${formatarMoeda(
+          resultado.parcelaOriginal
+        )}</s>`,
+        "{{NOVA_PARCELA}}": comLance
+          ? formatarMoeda(resultado.parcelaPosContemplacao)
+          : "",
+        "{{PRAZO_RESTANTE}}": `${
+          comLance ? resultado.prazoComLance : dadosCredito.numeroParcelas
+        } Meses`,
+        "{{PERC_LANCE}}": comLance
+          ? `${(resultado.lance.percentualOfertado || 0)
+              .toFixed(2)
+              .replace(".", ",")}%`
+          : "",
+        "{{RECURSO_PROPRIO}}": comLance
+          ? formatarMoeda(resultado.lance.valorDoBolso)
+          : "",
+        "{{LANCE_EMBUTIDO}}": comLance
+          ? formatarMoeda(resultado.lance.valorEmbutido)
+          : "",
+        "{{TIPO_LANCE}}": comLance
+          ? (resultado.lance.tipo || "N/A").replace(/_/g, " ").toUpperCase()
+          : "",
+        "{{QTD_PARCELAS_ADESAO}}": dadosCredito.formaPagamentoAdesao || 0,
+        "{{VALOR_PARCELA_ADESAO}}": formatarMoeda(
+          resultado.parcelaComRedutor + resultado.adesaoMensal
+        ),
+        "{{DATA_SIMULACAO}}": new Date().toLocaleDateString("pt-BR"),
+        "{{NOME_USUARIO}}": "Simulador Web",
+        "{{LANCE_INFO_STYLE}}": comLance ? "" : "display: none;",
+        "{{ESTILO_DESTAQUE_SEM_LANCE}}": !comLance
+          ? "color: rgb(136, 201, 38); font-size: 1.2em;"
+          : "",
+      };
+
+      let htmlFinal = htmlTemplate;
+      for (const [key, value] of Object.entries(placeholders)) {
+        htmlFinal = htmlFinal.replace(new RegExp(key, "g"), value);
+      }
+
+      const container = document.createElement("div");
+      container.style.position = "fixed";
+      container.style.left = "-9999px";
+      container.style.top = "0px";
+      container.innerHTML = htmlFinal;
+      document.body.appendChild(container);
+
+      const canvas = await html2canvas(
+        container.querySelector(".pdf-wrapper"),
+        {
+          scale: 2.5,
+          useCORS: true,
+        }
+      );
+
+      document.body.removeChild(container);
+
+      const imgData = canvas.toDataURL("image/png");
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`${dadosCredito.nomeCliente.replace(/ /g, "_")}_simulacao.pdf`);
+    } catch (err) {
+      console.error("Erro completo ao gerar PDF:", err);
+      if (erroSimulacaoP) {
+        erroSimulacaoP.textContent =
+          "Erro ao gerar o PDF. Verifique o console para detalhes.";
+        erroSimulacaoP.style.display = "block";
+      }
+    } finally {
+      btnImprimirPDF.disabled = false;
+      btnImprimirPDF.textContent = "Imprimir Simulação em PDF";
+    }
+  }
+
+  function exibirResultados(data, dadosCredito) {
     const {
       lance,
       parcelaComRedutor,
@@ -1650,15 +1828,8 @@
     } = data;
 
     const { admin, tipoBem, valorCredito, nomeCliente } = dadosCredito;
+    const nomeUsuarioLogado = "Simulador Web";
 
-    const userDataResponse = await window.electronAPI.invoke(
-      "get-current-user-data"
-    );
-    const nomeUsuarioLogado = userDataResponse.success
-      ? userDataResponse.user.username
-      : "N/A";
-
-    // Preenche os spans principais
     if (resultadoNomeCliente) {
       resultadoNomeCliente.textContent = nomeCliente || "Não informado";
     }
@@ -1672,7 +1843,6 @@
       resultadoCreditoContratado.textContent = formatarMoeda(valorCredito);
     }
 
-    // --- MUDANÇA 1: Aplica o risco na Parcela Integral na tela ---
     if (resultadoParcelaBaseSemRedutor) {
       resultadoParcelaBaseSemRedutor.innerHTML = `<s>${formatarMoeda(
         parcelaOriginal
@@ -1681,19 +1851,16 @@
 
     const comLance = lance && lance.tipo !== "nenhum";
 
-    // --- MUDANÇA 2: Aplica o estilo verde condicionalmente na tela ---
     const parcelaComRedutorEl = document.getElementById(
       "resultadoParcelaComRedutor"
     );
     if (parcelaComRedutorEl) {
       parcelaComRedutorEl.textContent = formatarMoeda(parcelaComRedutor);
       if (!comLance) {
-        // Se NÃO tiver lance, aplica o estilo de destaque
         parcelaComRedutorEl.style.color = "rgb(136, 201, 38)";
         parcelaComRedutorEl.style.fontSize = "1.25em";
         parcelaComRedutorEl.style.fontWeight = "700";
       } else {
-        // Se TIVER lance, volta ao estilo padrão do CSS
         parcelaComRedutorEl.style.color = "";
         parcelaComRedutorEl.style.fontSize = "";
         parcelaComRedutorEl.style.fontWeight = "";
@@ -1795,8 +1962,9 @@
         "pt-BR"
       )}`;
     }
-
     ultimoResultadoParaPdf = { resultado: data, dadosCredito: dadosCredito };
+    setElementVisibility(areaResultadosSimulacaoDiv, true);
+
     setElementVisibility(areaResultadosSimulacao, true);
   }
 
@@ -1838,110 +2006,8 @@
   if (btnSimular) {
     btnSimular.addEventListener("click", simularConsorcio);
   }
-
   if (btnImprimirPDF) {
-    btnImprimirPDF.addEventListener("click", async () => {
-      if (!ultimoResultadoParaPdf) {
-        erroSimulacaoP.textContent =
-          "Por favor, gere uma simulação primeiro antes de imprimir.";
-        setElementVisibility(erroSimulacaoP, true);
-        return;
-      }
-
-      btnImprimirPDF.disabled = true;
-      btnImprimirPDF.textContent = "Gerando PDF...";
-      erroSimulacaoP.style.display = "none";
-
-      try {
-        const { resultado, dadosCredito } = ultimoResultadoParaPdf;
-
-        // --- ESTA É A VALIDAÇÃO PRINCIPAL ---
-        const comLance = resultado.lance && resultado.lance.tipo !== "nenhum";
-        const estiloBlocoLance = comLance ? "" : "display: none;";
-        // --- FIM DA VALIDAÇÃO ---
-
-        const userDataResponse = await window.electronAPI.invoke(
-          "get-current-user-data"
-        );
-        const nomeUsuarioLogado = userDataResponse.success
-          ? userDataResponse.user.username
-          : "N/A";
-
-        const newLocal_1 = {
-          NOME_CLIENTE: dadosCredito.nomeCliente.toUpperCase() || "N/A",
-          ADMIN_NOME: dadosCredito.admin.toUpperCase() || "N/A",
-          TIPO_BEM: dadosCredito.tipoBem.toUpperCase() || "N/A",
-          NOME_USUARIO: nomeUsuarioLogado,
-          DATA_SIMULACAO: new Date().toLocaleDateString("pt-BR"),
-          VALOR_CREDITO: formatarMoeda(dadosCredito.valorCredito),
-          PERC_REDUTOR: (resultado.percentualRedutor || 0)
-            .toFixed(2)
-            .replace(".", ","),
-          PARCELA_COM_REDUTOR: formatarMoeda(resultado.parcelaComRedutor),
-
-          // --- MUDANÇA 1: Adicionando o risco na parcela integral ---
-          PARCELA_INTEGRAL: `<s>${formatarMoeda(
-            resultado.parcelaOriginal
-          )}</s>`,
-
-          PRAZO_RESTANTE: `${
-            comLance ? resultado.prazoComLance : dadosCredito.numeroParcelas
-          } Meses`,
-          TEM_ADESAO:
-            dadosCredito.admin === "porto" && resultado.adesaoMensal > 0,
-          QTD_PARCELAS_ADESAO: dadosCredito.formaPagamentoAdesao || 0,
-          VALOR_PARCELA_ADESAO: formatarMoeda(
-            resultado.parcelaComRedutor + resultado.adesaoMensal
-          ),
-
-          // --- MUDANÇA 2: Criando o novo estilo condicional ---
-          ESTILO_DESTAQUE_SEM_LANCE: !comLance
-            ? "color: rgb(136, 201, 38); font-size: 1.2em;"
-            : "",
-
-          // --- Propriedades de Lance (continuam iguais) ---
-          LANCE_INFO_STYLE: estiloBlocoLance,
-          CREDITO_LIQUIDO: comLance
-            ? formatarMoeda(resultado.creditoLiquido)
-            : "",
-          NOVA_PARCELA: comLance
-            ? formatarMoeda(resultado.parcelaPosContemplacao)
-            : "",
-          TIPO_LANCE: comLance
-            ? (resultado.lance.tipo || "N/A").replace(/_/g, " ").toUpperCase()
-            : "",
-          PERC_LANCE: comLance
-            ? (resultado.lance.percentualOfertado || 0)
-                .toFixed(2)
-                .replace(".", ",") + "%"
-            : "",
-          LANCE_EMBUTIDO: comLance
-            ? formatarMoeda(resultado.lance.valorEmbutido)
-            : "",
-          RECURSO_PROPRIO: comLance
-            ? formatarMoeda(resultado.lance.valorDoBolso)
-            : "",
-        };
-        const newLocal = newLocal_1;
-        const dadosParaTemplate = newLocal;
-
-        const resultadoPdf = await window.electronAPI.invoke(
-          "gerar-pdf-com-template",
-          dadosParaTemplate
-        );
-
-        if (!resultadoPdf.success && !resultadoPdf.cancelled) {
-          throw new Error(resultadoPdf.message);
-        }
-      } catch (err) {
-        console.error("Erro no processo de gerar PDF:", err);
-        erroSimulacaoP.textContent = `Erro ao gerar PDF: ${err.message}`;
-        setElementVisibility(erroSimulacaoP, true);
-      } finally {
-        btnImprimirPDF.disabled = false;
-        btnImprimirPDF.textContent = "Imprimir Simulação em PDF";
-      }
-    });
+    btnImprimirPDF.addEventListener("click", gerarPDF);
   }
 
   ocultarTodasSecoesPrincipais();
