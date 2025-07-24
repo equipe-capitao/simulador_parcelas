@@ -1,5 +1,5 @@
-# simulador_parcelas
-Simulador de Parcelas
+# simulador_parcelas_Consórcios
+Simulador de Parcelas de Consórcios
 
 👨‍💻 Autor e Desenvolvedor
 <p>
