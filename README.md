@@ -13,7 +13,7 @@ Uma aplicação web desenvolvida para simular valores de consórcio para a **Cap
 ## 👨‍💻 Autor e Desenvolvedor
 
 <p>
-  <img align="left" src="https://avatars.githubusercontent.com/u/101883398?v=4" width="80" height="80" style="border-radius:50%;">
+  <img align="left" src="https://avatars.githubusercontent.com/u/201021844?v=4" width="80" height="80" style="border-radius:50%;">
   <strong>Gustavo (Guzinn01)</strong><br>
   Desenvolvedor responsável pelo projeto.<br>
   <a href="https://github.com/Guzinn01">
